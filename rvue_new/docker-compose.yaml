@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: dev_new
+      POSTGRES_PASSWORD: dev_new
+      POSTGRES_DB: dev_new
+  web:
+    build: .
+    volumes:
+      - ./apps:/apps
+    ports:
+      - "3000:3000"
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+    working_dir: /apps
+    # command: bash -c "rm -f tmp/pids/server.pid"
+    # command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
+
+volumes:
+    pg_data:
+      driver: local

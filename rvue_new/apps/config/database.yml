@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  timeout: 5000
+  pool: 5
+  host: db
+  username: dev_new
+  password: dev_new
+#
+development:
+  <<: *default
+  database: dev
+
+test:
+  <<: *default
+  database: dev_test
+
+production:
+  <<: *default
+  database: apps_production
+  username: apps
+  password: <%= ENV["APPS_DATABASE_PASSWORD"] %>
